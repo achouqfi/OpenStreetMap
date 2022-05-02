@@ -18,7 +18,10 @@ var villes = [
     {"nom": "Basel", "lat": 47.57, "lon": 7.567},
     {"nom": "Bern", "lat": 46.947, "lon": 7.447},
     {"nom": "Strasbourg", "lat": 48.58, "lon": 7.75},
-];
+]; 
+
+//markers table
+var markersTable = [];
 
 //map initialisation
 var map = L.map('map').setView([48.852996, 2.349903], 4);
@@ -32,7 +35,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // marker layer
 var markers = L.markerClusterGroup();
-
 // custom marker
 var icon = L.icon({
     iconUrl: './image/marker.png',
@@ -46,8 +48,11 @@ for (let index = 0; index < villes.length; index++) {
     var marker = L.marker([villes[index].lat, villes[index].lon], { icon:icon }); //create marker
     marker.bindPopup((villes[index].nom)); //bind popup
     markers.addLayer(marker); //add marker
+    markersTable.push(marker); //push markers to new array
 }
 
-console.log(markers);
+var group = new L.featureGroup(markersTable);
+map.fitBounds(group.getBounds().pad(0.2));
+
 // add marker to map
 map.addLayer(markers);

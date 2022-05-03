@@ -28,7 +28,6 @@ let triangle = L.polygon([
 }).addTo(carte);
 triangle.bindPopup("Triangle sur Paris");
 
-
 let polygon = L.polygon([
     [48.85779759188263, 2.339272499084472],
     [48.85703523304221, 2.3406243324279785],
@@ -55,3 +54,42 @@ let polygon = L.polygon([
     [48.85779759188263, 2.339272499084472],
 ]).addTo(carte);
 polygon.bindPopup("cité");
+
+let xmlhttp = new XMLHttpRequest();
+
+// Sur changement de statut
+xmlhttp.onreadystatechange = () => {
+    // Si la transaction est terminée
+    if (xmlhttp.readyState == 4){
+        // Si la transaction est un succès
+        if(xmlhttp.status == 200) {
+            // On traite le json reçu
+            let geojson = JSON.parse(xmlhttp.responseText)
+
+            // On dessine le polygone
+            let geojsonLayer = L.geoJSON(geojson, {
+                style: {
+                    "color": "red",
+                    "opacity": 1,
+                    "weight": 1,
+                    "fillColor": "red", 
+                    "fillOpacity": 0.5
+                }
+            });
+            // On ajoute une popup
+            geojsonLayer.bindPopup("Département 89");
+
+            // On ajoute à la carte
+            geojsonLayer.addTo(carte);
+
+        } else {
+            console.log(req.status);
+        }
+    }
+}
+
+// On ouvre la connexion vers le fichier geojson
+xmlhttp.open('GET', 'departement-89.geojson', true);
+
+// On envoie la requête
+xmlhttp.send(null);

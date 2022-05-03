@@ -81,7 +81,6 @@ xmlhttp.onreadystatechange = () => {
 
             // On ajoute à la carte
             geojsonLayer.addTo(carte);
-
         } else {
             console.log(req.status);
         }
